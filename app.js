@@ -41,6 +41,8 @@ var seattleCenter = new Store('Seattle Center', 11, 38, 3.7);
 var capitolHill = new Store('Capitol Hill', 20, 38, 2.3);
 var alki = new Store('Alki', 2, 16, 4.6);
 
+
+
 //displays shop cookies list (with total) when called
 var dispShops = function (shopObj) {
 
@@ -48,6 +50,9 @@ var dispShops = function (shopObj) {
   var data = ['<td></td>'];
   var table = document.getElementById('table_head');
   var tableContent = document.getElementById('table_content');
+
+  table.innerHTML = '';
+  tableContent.innerHTML = '';
 
   var arrOfStoresCookies = [];
   //get array of cookies
@@ -107,6 +112,38 @@ var dispShops = function (shopObj) {
   }
 };
 
-//Create array of our shops and display them
+//grab initial form pointer
+var form = document.getElementById('shop_form');
+
+function formData(event) {
+  event.preventDefault();
+
+  var shopName = event.target.shop_name.value;
+  var minCust = parseInt(event.target.min_cust.value);
+  var maxCust = parseInt(event.target.max_cust.value);
+  var avgCookieSale = parseInt(event.target.avg_cookie_sale.value);
+
+  console.log(minCust, maxCust, avgCookieSale);
+
+  //alert the user if
+  if (isNaN(minCust) || isNaN(maxCust) || isNaN(avgCookieSale)) {
+    alert('HEY! That\'s not a number! Fix your form please.');
+    return;
+  }
+
+  arrOfStores.push(new Store(shopName, minCust, maxCust, avgCookieSale));
+
+  //Display shops
+  dispShops(arrOfStores);
+
+  form.reset();
+}
+
+
+
+//submit form on submit enter or button click
+form.addEventListener('submit', formData);
+
+//Generate array of stores and display for initial shops
 var arrOfStores = [firstAndPike, seatacAirport, seattleCenter, capitolHill, alki];
 dispShops(arrOfStores);
